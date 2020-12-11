@@ -27,7 +27,7 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   ```
 5. Mask out everything but the LSB to get the *primary* checksum of the line:
   ```
-  :90
+  590 & 0xff = 90
   ```
   which correlates with the number at the very end of the line. Note that from the LSB *no* additional one's or two's complement is calculated here!
 6. Do an Adler32 over all of the (in this case 32) line checksums for a particular data record, and paste the result into the corresponding checksum vector:
