@@ -29,7 +29,7 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   ```
   590 & 0xff = 90
   ```
-  which correlates with the number at the very end of the line. Note that *no* additional one's or two's complement is calculated here of the LSB!
+  which correlates with the number at the very end of the line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
 6. Do an Adler32 over all of the (in this case 32) line checksums for a particular data record, and paste the result into the corresponding checksum vector:
   ```
   H:20:6300000000000000000000000000000000000000:63
