@@ -31,6 +31,7 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   590 & 0xff = 90
   ```
   which correlates with the number at the very end of the line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
+  
 6. Calculate (same as before) the checksum of all (in this case 32) line checksums
   ```
   (0xB8+0x90+...+0xC0) & 0xff = 0x63
