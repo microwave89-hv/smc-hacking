@@ -7,6 +7,7 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   D:00000000:64:B002002051020000C902000057020000570200005702000057020000000000000000000000000000000000005702000057020000000000005702000057020000:B8
   +         :64:57020000570200005702000057020000570200005702000057020000570200005702000057020000570200005702000057020000570200005702000057020000:90
   ...
+  +         :64:FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:C0
   ```
   then becomes (when considering the second line in this example):
   ```
@@ -30,6 +31,10 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   590 & 0xff = 90
   ```
   which correlates with the number at the very end of the line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
+6. Calculate (same as before) the checksum of all (in this case 32) line checksums
+  ```
+  (0xB8+0x90+...+0xC0) & 0xff = 0x63
+  ```
   
 6. ~~Do an Adler32 over all of the (in this case 32) line checksums for a particular data record, and paste the result into the corresponding checksum vector:~~
   ```
