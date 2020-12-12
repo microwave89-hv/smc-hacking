@@ -31,12 +31,13 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   ```
   which correlates with the number at the very end of the line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
   
-6. Do an Adler32 over all of the (in this case 32) line checksums for a particular data record, and paste the result into the corresponding checksum vector:
+6. ~~Do an Adler32 over all of the (in this case 32) line checksums for a particular data record, and paste the result into the corresponding checksum vector:~~
   ```
   H:20:6300000000000000000000000000000000000000:63
   ```
-7. Calculate the checksum of the checksum vector, which is the *secondary* checksum, as before:
+~~7. Calculate the checksum of the checksum vector, which is the *secondary* checksum, as before:~~
   ```
   (0x63+...+00) & 0xff = 0x63
   ```
-8. $$$PROFIT$$$ ;)
+~~8. $$$PROFIT$$$ ;)~~
+7. + furthers: **TBD**
