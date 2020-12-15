@@ -1,7 +1,7 @@
 # How manually calculate/correct line checksum in .smc file?
 
 According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do the following:
-1. Take a line with the `64:` in front which you want to calculate the *primary* checksum for and precede each byte with a space.
+1. Take a line with the `64:` in front which you want to calculate the *primary* checksum ("checksum for a data line") for and precede each byte with a space.
   e.g. this
   ```
   D:00000000:64:B002002051020000C902000057020000570200005702000057020000000000000000000000000000000000005702000057020000000000005702000057020000:B8
@@ -30,9 +30,9 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   ```
   590 & 0xff = 90
   ```
-  which correlates with the number at the very end of the line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
+  which correlates with the number at the very end of the data line. Note that in this case *no* additional one's or two's complement is calculated from the LSB!
   
-6. Calculate (same as before) the checksum of all (in this case 32) line checksums
+6. Calculate (same algorithm as before) the checksum of all (in this case 32) data line checksums to get the checksum vector (hash) of the data block
   ```
   (0xB8+0x90+...+0xC0) & 0xff = 0x63
   ```
@@ -46,4 +46,26 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
   (0x63+...+00) & 0xff = 0x63
   ```
 ~~8. $$$PROFIT$$$ ;)~~
-7. + furthers: **TBD**
+7. Calculate (same algorithm as before) the checksum of a hash
+8. Calculate (same algorithm as before) the checksum of all hash checksums to obtain the security sum
+9. Calculate (same algorithm as before) the checksum of the security sum (checksum of security sum ("S") of checksums of all hashes ("H") of all checksums of all data lines in a datablock ("D") (lol..))
+
+TL;DR: If possible, craft the payload line in a way (alternative instructions...) such that two changes in the same line are opposing each other `(00 + FF = 01 + FE = FF)`. If not possible, craft another data line in a way that upon updating the two data line checksums accordingly the two checksum changes are opposing each other. This is only possible if there are some unused ffff lines. Otherwise, you might compute all-new checksums for the changes and update the existing ones just as good.
+
+# How "unpack" .smc blob
+
+In their 2012 presentation "Practical Exploitation of Embedded Systems" (https://dev.inversepath.com/download/public/embedded_systems_exploitation.pdf), the InversePath researchers have issued the following shell command:
+```
+$ grep -o -E “[A-Z0-9]{64,}” m96.smc | xxd -r -p > m96.bin
+```
+This simply becomes
+```
+$ grep -o -E "[A-Z0-9]{64,}" 2012MBPR15.smc | xxd -r -p > 2012MBPR15.bin
+```
+for a MacBook Pro Retina 15" from 2012.
+The binary file should then be padded with (0's, ff's?) to have it somewhat match the ROM layout...
+
+# How disassemble SMC code
+0. Get (flow-) arm disassembler (any IDA alternatives out there?)
+1. Set instruction set to TBD (Thumb2?)
+2. Set endianness to TBD
