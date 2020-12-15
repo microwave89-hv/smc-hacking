@@ -1,6 +1,6 @@
 # How manually calculate/correct line checksum in .smc file?
 
-According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do the following:
+According to Alex Ionescu, in his 2014 talk "Apple SMC The place to be, definitely (for an implant)" (https://youtu.be/nSqpinjjgmg?t=2053), do the following:
 1. Take a line with the `64:` in front which you want to calculate the *primary* checksum ("checksum for a data line") for and precede each byte with a space.
   e.g. this
   ```
@@ -52,7 +52,7 @@ According to Alex Ionescu, in his talk "https://youtu.be/nSqpinjjgmg?t=2053", do
 
 TL;DR: If possible, craft the payload line in a way (alternative instructions...) such that two changes in the same line are opposing each other `(00 + FF = 01 + FE = FF)`. If not possible, craft another data line in a way that upon updating the two data line checksums accordingly the two checksum changes are opposing each other. This is only possible if there are some unused ffff lines. Otherwise, you might compute all-new checksums for the changes and update the existing ones just as good.
 
-# How "unpack" .smc blob
+# How convert .smc blob to binary
 
 In their 2012 presentation "Practical Exploitation of Embedded Systems" (https://dev.inversepath.com/download/public/embedded_systems_exploitation.pdf), the InversePath researchers have issued the following shell command:
 ```
