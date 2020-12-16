@@ -49,6 +49,7 @@ According to Alex Ionescu, in his 2014 talk "Apple SMC The place to be, definite
 7. Calculate (same algorithm as before) the checksum of a hash
 8. Calculate (same algorithm as before) the checksum of all hash checksums to obtain the security sum
 9. Calculate (same algorithm as before) the checksum of the security sum (checksum of security sum ("S") of checksums of all hashes ("H") of all checksums of all data lines in a datablock ("D") (lol..))
+a. $$$PROFIT$$$ :)
 
 TL;DR: If possible, craft the payload line in a way (alternative instructions...) such that two changes in the same line are opposing each other `(00 + FF = 01 + FE = FF)`. If not possible, craft another data line in a way that upon updating the two data line checksums accordingly the two checksum changes are opposing each other. This is only possible if there are some unused ffff lines. Otherwise, you might compute all-new checksums for the changes and update the existing ones just as good.
 
@@ -63,7 +64,7 @@ This simply becomes
 $ grep -o -E "[A-Z0-9]{64,}" 2012MBPR15.smc | xxd -r -p > 2012MBPR15.bin
 ```
 for a MacBook Pro Retina 15" from 2012.
-The binary file should then be padded with (0's, ff's?) to have it somewhat match the ROM layout...
+The binary file should then be padded with (~~0's,~~ ff's?) to have it somewhat match the ROM layout...
 
 # How disassemble SMC code
 0. Get (flow-) arm disassembler (any IDA alternatives out there?)
