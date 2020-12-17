@@ -63,7 +63,7 @@ Substract always the same delta from all the parent checksums, while making sure
 
 # How convert .smc blob to binary
 
-In their 2012 presentation "Practical Exploitation of Embedded Systems" (https://dev.inversepath.com/download/public/embedded_systems_exploitation.pdf), the InversePath researchers have issued the following shell command:
+In their 2012 presentation "*Practical Exploitation of Embedded Systems*" (https://dev.inversepath.com/download/public/embedded_systems_exploitation.pdf), the InversePath researchers have issued the following shell command:
 ```
 $ grep -o -E “[A-Z0-9]{64,}” m96.smc | xxd -r -p > m96.bin
 ```
@@ -99,7 +99,7 @@ Brotip: Don't get confused by some of the handler addresses in the key table. So
 # How load new .smc file
 1. Mount a partition that contains an EFI shell
 2. Copy to the root:
-  * SmcUtil.efi (see https://github.com/microwave89-hv/hw-fw-notes/blob/master/tools.md#old-smcutil)
+  * *SmcUtil.efi* (see https://github.com/microwave89-hv/hw-fw-notes/blob/master/tools.md#old-smcutil)
   * PristineSmcUpdate.smc
   * YourModifiedSmcUpdate.smc
 3. (Write down the following instructions to a sheet of paper in real life ;D )
