@@ -1,6 +1,6 @@
 # How manually calculate/correct line checksum in .smc file?
 
-According to Alex Ionescu, in his 2014 talk "Apple SMC The place to be, definitely (for an implant)" (https://youtu.be/nSqpinjjgmg?t=2053), do the following:
+According to Alex Ionescu, in his 2014 talk "*Apple SMC The place to be, definitely (for an implant)*" (https://youtu.be/nSqpinjjgmg?t=2053), do the following:
 1. Take a line with the `64:` in front which you want to calculate the *primary* checksum ("checksum for a data line") for and precede each byte with a space.
   e.g. this
   ```
