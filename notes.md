@@ -52,6 +52,14 @@ According to Alex Ionescu, in his 2014 talk "Apple SMC The place to be, definite
 a. $$$PROFIT$$$ :)
 
 TL;DR: If possible, craft the payload line in a way (alternative instructions...) such that two changes in the same line are opposing each other `(00 + FF = 01 + FE = FF)`. If not possible, craft another data line in a way that upon updating the two data line checksums accordingly the two checksum changes are opposing each other. This is only possible if there are some unused ffff lines. Otherwise, you might compute all-new checksums for the changes and update the existing ones just as good.
+BROTIP: Sum up your changes and add them to -(what was there before). This gives you some delta byte. Subtract this delta from the entire affected checksum tree, for example:
+```
+- 0f d2
++ 00 bf
+-------
+  00 22 ==> ("change delta")
+```
+Substract always the same delta from all the parent checksums, while making sure that you update the proper checksum vector.
 
 # How convert .smc blob to binary
 
@@ -67,6 +75,45 @@ for a MacBook Pro Retina 15" from 2012.
 The binary file should then be padded with (~~0's,~~ ff's?) to have it somewhat match the ROM layout...
 
 # How disassemble SMC code
-0. Get (flow-) arm disassembler (any IDA alternatives out there?)
-1. Set instruction set to TBD (Thumb2?)
-2. Set endianness to TBD
+~~0. Get (flow-) arm disassembler (any IDA alternatives out there?)~~
+0. Open disassembler.io
+1. Close tutorial and paste bytes to dissassemble
+2. Set arch to arm
+3. Set address to actual flash address where these bytes are going to be located when the SMC is running (==> not the address when viewing the 2012MBPR15.bin!!!)
+4. Set endianness to TBD
+5. Set thumb mode to force-thumb (SMC uses Thumb2 instruction set)
+Note: As of now, each time that you make a change to the hex bytes you need to set endianness to BIG and then back to LITTLE, otherwise base address is 0 again
+Brotip: Don't get confused by some of the handler addresses in the key table. Sometimes those set the bit 0 of the PC which doesn't seem to have an effect, since the instructions have to be aligned on a 2 byte boundary according to the datasheet / reference manual / architecture manual / whateves.
+
+# How prepare updated .smc file
+1. Write down the exact changes that you have made to the rom-alike (= properly padded) binary file
+2. In the rom image-alike (padded) binary file copy around 12 to 16 bytes directly preceeding your changes while making sure that the byte string is unique
+3. In a temporary text editor window remove all spaces or separators between these bytes
+4. In the source .smc file find those bytes and temporarily write down the bytes that are going to be replaced
+5. Make the change that you have written down previously to the bytes immediately following the search string
+6. Sum up the outgoing bytes and and the result with 0xff
+7. Sum up the incoming bytes and and the result with 0xff
+8. Calculate the change delta, which may be negative as well
+9. Add the change delta to each parent checksum/vector in the affected checksum tree (make sure you choose the correct checksum vector out of the many...)
+
+# How load new .smc file
+1. Mount a partition that contains an EFI shell
+2. Copy to the root:
+  * SmcUtil.efi
+  * PristineSmcUpdate.smc
+  * YourModifiedSmcUpdate.smc
+(3.1 Write down the following instructions to a note in real life ;D )
+3. Boot into EFI shell
+4. Issue following command:
+```
+SmcUtil -force -LoadApp PristineSmcUpdate.smc -norestart
+```
+(This lets you see if the update mechanism will work in the first place)
+5. Follow up with:
+```
+SmcUtil -force -LoadApp YourModifiedSmcUpdate.smc -norestart
+```
+6. Wait until flashing finishes (It should only take 1 to 2 s and then tell you that it was flashed successfully). While it's flashing the fans may go crazy and come back to normal. If they don't, do the following:
+  * Try to reset the SMC (`SmcUtil -reset`)
+  * Try to flash the PristineSmcUpdate.smc
+This should make the fans go back to normal.
