@@ -99,7 +99,7 @@ Brotip: Don't get confused by some of the handler addresses in the key table. So
 # How load new .smc file
 1. Mount a partition that contains an EFI shell
 2. Copy to the root:
-  * SmcUtil.efi
+  * SmcUtil.efi (see https://github.com/microwave89-hv/hw-fw-notes/blob/master/tools.md#old-smcutil)
   * PristineSmcUpdate.smc
   * YourModifiedSmcUpdate.smc
 (3.1 Write down the following instructions to a note in real life ;D )
