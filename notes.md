@@ -108,7 +108,7 @@ Brotip: Don't get confused by some of the handler addresses in the key table. So
 ```
 SmcUtil -force -LoadApp PristineSmcUpdate.smc -norestart
 ```
-(This lets you see if the update mechanism will work in the first place)
+  (This lets you see if the update mechanism will work in the first place)
 5. Follow up with:
 ```
 SmcUtil -force -LoadApp YourModifiedSmcUpdate.smc -norestart
