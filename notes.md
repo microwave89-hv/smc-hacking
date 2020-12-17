@@ -102,9 +102,9 @@ Brotip: Don't get confused by some of the handler addresses in the key table. So
   * SmcUtil.efi (see https://github.com/microwave89-hv/hw-fw-notes/blob/master/tools.md#old-smcutil)
   * PristineSmcUpdate.smc
   * YourModifiedSmcUpdate.smc
-(3.1 Write down the following instructions to a note in real life ;D )
-3. Boot into EFI shell
-4. Issue following command:
+3. (Write down the following instructions to a sheet of paper in real life ;D )
+4. Boot into EFI shell
+5. Issue following command:
 ```
 SmcUtil -force -LoadApp PristineSmcUpdate.smc -norestart
 ```
